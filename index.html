@@ -529,9 +529,9 @@ body {
         <div class="kpi-sub">Preliminary · Up from 3.5% in Dec 2025 · U.S. = 4.4%</div>
       </div>
       <div class="kpi-cell">
-        <div class="kpi-label">CPI Inflation (Feb 2026, YoY)</div>
-        <div class="kpi-val">1.7%</div>
-        <div class="kpi-sub"><span class="tag-up">Below U.S. avg (2.7%)</span> · 18+ consecutive months</div>
+        <div class="kpi-label">CPI Annual Growth Rate (Feb 2026)</div>
+        <div class="kpi-val">1.75%</div>
+        <div class="kpi-sub"><span class="tag-up">Below U.S. (2.41%)</span> · Phoenix peaked 13.0% Aug 2022 · BLS CPI-U</div>
       </div>
     </div>
  
@@ -665,11 +665,11 @@ body {
       </div>
  
       <div class="card">
-        <div class="card-title">CPI Inflation — Phoenix MSA vs. U.S. (12-Month %)</div>
+        <div class="card-title">CPI Annual Growth Rate — Phoenix MSA vs. U.S. (%)</div>
         <div class="chart-wrap" style="height:240px;">
-          <canvas id="cpiChart" role="img" aria-label="Line chart showing Phoenix MSA CPI inflation vs U.S. from 2022 through February 2026.">Phoenix peaked ~12% mid-2022, now 1.7% Feb 2026. U.S. peaked ~9.1%, now ~2.7%.</canvas>
+          <canvas id="cpiChart" role="img" aria-label="Line chart showing Phoenix MSA and U.S. CPI annual growth rate Feb 2019 through Feb 2026.">Phoenix peaked ~13% Aug 2022, now 1.75% Feb 2026. U.S. peaked ~9.06% Jun 2022, now 2.41% Feb 2026.</canvas>
         </div>
-        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.5rem;">Source: BLS CPI-U, Phoenix-Mesa-Scottsdale. Most recent: Feb 2026 (1.7% YoY). Oct 2025 unavailable — federal funding lapse.</p>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.5rem;">Source: BLS CPI-U, Phoenix-Mesa-Scottsdale &amp; U.S. City Average. Annual (12-month) % change. Bimonthly data points. Most recent: Feb 2026 (Phoenix 1.75%, U.S. 2.41%). Oct 2025 unavailable — federal funding lapse.</p>
       </div>
     </div>
   </div>
@@ -768,7 +768,6 @@ body {
             <tr><td>VC funding, 2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$1.2B · 140+ deals</td></tr>
             <tr><td>VC investment growth, 2014–2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">+146%</td></tr>
             <tr><td>Total VC invested, 2020–2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$7.6B</td></tr>
-            <tr><td>Q1 2025 VC activity</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$214M · 34 deals</td></tr>
             <tr><td>Consecutive years above $1B VC threshold</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">7 years</td></tr>
             <tr><td>National startup ranking (U.S. Census Bureau)</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">#7 among U.S. cities</td></tr>
           </tbody>
@@ -1017,32 +1016,44 @@ new Chart(document.getElementById('popChart'), {
   }
 });
  
-// CPI chart
+// CPI chart — Annual (12-month) % change
+// Data from user-uploaded CPI_for_Claude.xlsx
+// Phoenix: BLS CPI-U Phoenix-Mesa-Scottsdale | U.S.: BLS CPI-U U.S. City Average
+// Bimonthly data points, Feb 2019 – Feb 2026
 new Chart(document.getElementById('cpiChart'), {
   type: 'line',
   data: {
-    labels: ['Mar 22','Jun 22','Sep 22','Dec 22','Mar 23','Jun 23','Sep 23','Dec 23','Mar 24','Jun 24','Sep 24','Dec 24','Feb 26'],
+    labels: [
+      'Feb\n2019','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2020','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2021','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2022','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2023','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2024','Apr','Jun','Aug','Oct','Dec',
+      'Feb\n2025','Apr','Jun','Aug','Dec',
+      'Feb\n2026'
+    ],
     datasets: [
       {
         label: 'Phoenix MSA',
-        data: [9.0, 12.3, 11.8, 8.1, 5.2, 3.6, 2.6, 2.5, 2.6, 2.1, 1.5, 2.2, 1.7],
+        data: [2.11,2.34,2.24,3.01,3.78,3.45,4.36,1.48,1.99,1.83,0.68,0.52,0.99,4.91,5.36,5.15,7.1,9.74,10.92,11.01,12.35,13.01,12.14,9.49,8.49,7.42,4.41,3.7,2.87,2.69,2.2,2.58,2.69,2.27,1.56,1.62,1.8,0.33,0.23,1.43,2.23,1.75],
         borderColor: mdBlue,
         backgroundColor: 'rgba(28,84,244,0.06)',
         tension: 0.35,
         fill: true,
-        pointRadius: 3,
-        pointBackgroundColor: mdBlue,
+        pointRadius: 0,
+        pointHoverRadius: 4,
         borderWidth: 2
       },
       {
         label: 'United States',
-        data: [8.5, 9.1, 8.2, 6.5, 5.0, 3.0, 3.7, 3.4, 3.5, 3.0, 2.4, 2.9, 2.7],
+        data: [1.52,2.0,1.65,1.75,1.76,2.29,2.33,0.33,0.65,1.31,1.18,1.36,1.68,4.16,5.39,5.25,6.22,7.04,7.87,8.26,9.06,8.26,7.75,6.45,6.04,4.93,2.97,3.67,3.24,3.35,3.15,3.36,2.97,2.53,2.6,2.89,2.82,2.31,2.67,2.92,2.68,2.41],
         borderColor: blueGrey,
         borderDash: [5, 4],
         backgroundColor: 'transparent',
         tension: 0.35,
-        pointRadius: 3,
-        pointBackgroundColor: blueGrey,
+        pointRadius: 0,
+        pointHoverRadius: 4,
         borderWidth: 1.5
       }
     ]
@@ -1055,11 +1066,24 @@ new Chart(document.getElementById('cpiChart'), {
         display: true, position: 'bottom',
         labels: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, boxWidth: 10, padding: 14 }
       },
-      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } }
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(2) + '%' } }
     },
     scales: {
-      x: { ticks: { color: textC, font: { size: 9, family: "'Open Sans', Verdana, sans-serif" }, maxRotation: 45, autoSkip: false }, grid: { color: gridC } },
-      y: { ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, callback: v => v + '%' }, grid: { color: gridC }, beginAtZero: true }
+      x: {
+        ticks: {
+          color: textC,
+          font: { size: 8, family: "'Open Sans', Verdana, sans-serif" },
+          maxRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: 14
+        },
+        grid: { color: gridC }
+      },
+      y: {
+        ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, callback: v => v + '%' },
+        grid: { color: gridC },
+        beginAtZero: true
+      }
     }
   }
 });
