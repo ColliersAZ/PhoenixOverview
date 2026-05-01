@@ -402,7 +402,40 @@ body {
 }
 .mayor-cell.light .mayor-stat { color: var(--medium-blue); }
  
-/* ─── OUTLOOK ─── */
+/* ─── CITY PRIORITIES STRIP ─── */
+.priority-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--light-blue-grey);
+  border: 1px solid var(--light-blue-grey);
+  margin-top: 1.25rem;
+}
+.priority-cell { background: var(--dark-blue); padding: 1.2rem 1.3rem; }
+.priority-cell.light { background: var(--pale-blue-grey); }
+.priority-cat {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--light-blue);
+  margin-bottom: 0.4rem;
+}
+.priority-cell.light .priority-cat { color: var(--medium-blue); }
+.priority-cell h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--pale-blue);
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+}
+.priority-cell.light h4 { color: var(--dark-blue); }
+.priority-cell p { font-size: 0.7rem; color: var(--light-blue-grey); line-height: 1.55; }
+.priority-cell.light p { color: var(--deep-blue-grey); }
+.priority-stat { font-size: 1.1rem; font-weight: 700; color: var(--c-yellow); margin-top: 0.5rem; }
+.priority-cell.light .priority-stat { color: var(--medium-blue); }
+ 
+ 
 .outlook-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
 .outlook-card { padding: 1.4rem 1.5rem; }
 .outlook-card.tail {
@@ -667,7 +700,8 @@ body {
   <!-- ── SECTION 4: MAJOR INVESTMENT ── -->
   <div class="section-gap">
     <div class="section-header">
-      <span class="section-title">Major Capital Investment</span>
+      <span class="section-title">Major Investment &amp; City Priorities</span>
+      <span class="section-date">Active Projects · Mayor Gallego State of the City Address · April 23, 2026</span>
     </div>
  
     <div class="invest-grid">
@@ -709,9 +743,35 @@ body {
       </div>
     </div>
  
+    <!-- City Priorities Strip — non-investment items from Mayor Gallego's April 2026 address -->
+    <div class="priority-strip">
+      <div class="priority-cell">
+        <div class="priority-cat">Economic Competitiveness</div>
+        <h4>Top 4 for Per Capita GDP Growth</h4>
+        <p>Phoenix ranked alongside Seattle, San Jose &amp; San Francisco for per capita GDP growth 2022–2024, and #4 nationally for new corporate HQ attraction in 2025.</p>
+        <div class="priority-stat">#4 Corp. HQ</div>
+      </div>
+      <div class="priority-cell light">
+        <div class="priority-cat">Emerging Technology</div>
+        <h4>Phoenix Quantum Strategy</h4>
+        <p>City-led initiative to position Phoenix as a national hub for quantum computing, communications, and sensing. Led by former NSF Director Dr. Sethuraman Panchanathan.</p>
+        <div class="priority-stat">New initiative</div>
+      </div>
+      <div class="priority-cell">
+        <div class="priority-cat">Innovation &amp; Education</div>
+        <h4>$50M Investment in ASU Health</h4>
+        <p>City investing $50M in the new ASU Health building on the Phoenix Biomedical Core — merging medical and engineering education to transform regional health outcomes.</p>
+        <div class="priority-stat">$50M committed</div>
+      </div>
+      <div class="priority-cell light">
+        <div class="priority-cat">Housing &amp; Affordability</div>
+        <h4>Housing Trust Fund: $15M</h4>
+        <p>Trust Fund reaches $15M in 2026. Starting this year, funds will cover permit fees for affordable housing projects — removing a key barrier to project viability.</p>
+        <div class="priority-stat">$15M in 2026</div>
+      </div>
+    </div>
+    <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.6rem;">City priorities sourced from: Mayor Kate Gallego, State of the City Address, Greater Phoenix Chamber of Commerce, April 23, 2026.</p>
   </div>
- 
-  <!-- ── SECTION 5: BUSINESS FORMATION ── -->
   <div class="section-gap">
     <div class="section-header">
       <span class="section-title">Business Formation &amp; Entrepreneurship</span>
@@ -761,56 +821,6 @@ body {
     </div>
   </div>
  
-  <!-- ── SECTION 6: MAYOR'S ADDRESS ── -->
-  <div class="section-gap">
-    <div class="section-header">
-      <span class="section-title">City Leadership Priorities</span>
-      <span class="section-date">Mayor Gallego — State of the City Address · April 23, 2026</span>
-    </div>
- 
-    <div class="mayor-source">
-      <strong>Source:</strong> Mayor Kate Gallego, Annual State of the City Address, Greater Phoenix Chamber of Commerce, April 23, 2026.
-    </div>
- 
-    <div class="mayor-grid">
-      <div class="mayor-cell">
-        <div class="mayor-cat">Economic Competitiveness</div>
-        <h3>Top 4 U.S. City for Per Capita GDP Growth</h3>
-        <p>Phoenix ranked alongside Seattle, San Jose, and San Francisco for per capita GDP growth from 2022 to 2024, and ranked 4th nationally for attracting new corporate headquarters in 2025.</p>
-        <div class="mayor-stat">#4 Corp. HQ</div>
-      </div>
-      <div class="mayor-cell">
-        <div class="mayor-cat">Semiconductor Ecosystem</div>
-        <h3>TSMC Supplier Wave in Deer Valley</h3>
-        <p>TSMC's $165 billion campus — now spanning 2,000+ acres in N. Phoenix — continues to attract suppliers. Lam Research located its national training center nearby, adding 440 high-quality jobs. Suppliers have secured 80+ acres in Deer Valley.</p>
-        <div class="mayor-stat">80+ acres secured</div>
-      </div>
-      <div class="mayor-cell light">
-        <div class="mayor-cat">Emerging Technology</div>
-        <h3>Phoenix Quantum Strategy Announced</h3>
-        <p>A new city-led initiative to position Phoenix as a national hub for quantum computing, communications, and sensing. Led by former NSF Director Dr. Sethuraman Panchanathan.</p>
-        <div class="mayor-stat">Next frontier</div>
-      </div>
-      <div class="mayor-cell light">
-        <div class="mayor-cat">Innovation &amp; Education</div>
-        <h3>$50M City Investment in ASU Health</h3>
-        <p>The city is investing $50M in the new ASU Health building on downtown's Phoenix Biomedical Core — merging medical and engineering education to transform health outcomes in the region.</p>
-        <div class="mayor-stat">$50M committed</div>
-      </div>
-      <div class="mayor-cell">
-        <div class="mayor-cat">Housing &amp; Affordability</div>
-        <h3>Phoenix Housing Trust Fund: $15M</h3>
-        <p>The Housing Trust Fund reaches $15M in 2026. Starting this year, funds will cover permit fees for affordable housing projects — removing a critical barrier to project viability.</p>
-        <div class="mayor-stat">$15M in 2026</div>
-      </div>
-      <div class="mayor-cell">
-        <div class="mayor-cat">Business Climate</div>
-        <h3>Continued Corporate Headquarters Attraction</h3>
-        <p>Phoenix ranked 4th for new corporate HQ attraction in 2025. Combined with the Quantum Strategy and biomedical campus expansion, the city is diversifying its growth well beyond manufacturing.</p>
-        <div class="mayor-stat">Year 8: Mayor Gallego</div>
-      </div>
-    </div>
-  </div>
  
  
 </div><!-- /body-wrap -->
