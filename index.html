@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metro Phoenix Economic Dashboard — Colliers Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  /* Colliers Primary Palette */
+  --deep-blue:      #000759;
+  --dark-blue:      #25408F;
+  --medium-blue:    #1C54F4;
+  --light-blue:     #4D93FF;
+  --pale-blue:      #C3E6FF;
+  --white:          #FFFFFF;
+ 
+  /* Colliers Secondary Palette */
+  --deep-blue-grey: #353E59;
+  --dark-blue-grey: #56648F;
+  --med-blue-grey:  #7B8BBD;
+  --light-blue-grey:#ACBBE8;
+  --pale-blue-grey: #DBE5FF;
+ 
+  /* Colliers Tertiary (charts/graphs only) */
+  --c-yellow:  #FFD400;
+  --c-red:     #ED1B34;
+  --c-teal:    #2AB6A9;
+  --c-orange:  #FA6609;
+  --c-grey:    #CCCDD5;
+}
+ 
+html { font-size: 13px; }
+ 
+body {
+  font-family: 'Open Sans', Verdana, sans-serif;
+  background: var(--pale-blue-grey);
+  color: var(--deep-blue);
+  font-weight: 400;
+  line-height: 1.5;
+}
+ 
+/* ─── COVER ─── */
+.cover {
+  background: var(--dark-blue);
+  color: var(--white);
+  padding: 3.5rem 3.5rem 2.8rem;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 2rem;
+}
+/* Accent block — lighter blue, offset per Colliers block rules */
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 320px; height: 100%;
+  background: var(--medium-blue);
+  opacity: 0.22;
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+}
+.cover-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+.cover-logo-mark {
+  width: 36px; height: 36px;
+  background: var(--medium-blue);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+.cover-logo-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.cover-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pale-blue);
+  margin-bottom: 0.8rem;
+}
+.cover h1 {
+  font-size: 2.8rem;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+.cover h1 strong {
+  font-weight: 700;
+  color: var(--pale-blue);
+  display: block;
+}
+.cover-sub {
+  font-size: 0.72rem;
+  color: var(--light-blue-grey);
+  margin-top: 1.2rem;
+  line-height: 2;
+}
+.cover-badge {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+.cover-badge .big-num {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--pale-blue);
+  line-height: 1;
+}
+.cover-badge .big-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--light-blue-grey);
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+ 
+/* ─── COLOR BAR ─── */
+.color-bar {
+  height: 5px;
+  display: flex;
+}
+.color-bar span:nth-child(1) { background: var(--medium-blue); flex: 2; }
+.color-bar span:nth-child(2) { background: var(--light-blue);  flex: 1.5; }
+.color-bar span:nth-child(3) { background: var(--pale-blue);   flex: 1; }
+.color-bar span:nth-child(4) { background: var(--c-yellow);    flex: 0.5; }
+ 
+/* ─── BODY ─── */
+.body-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+ 
+/* ─── SECTION HEADER ─── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1.5px solid var(--dark-blue);
+}
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dark-blue);
+}
+.section-date {
+  font-size: 0.67rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark-blue-grey);
+  font-weight: 600;
+}
+.section-gap { margin-top: 2.5rem; }
+ 
+/* ─── KPI GRID ─── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--light-blue-grey);
+  border: 1px solid var(--light-blue-grey);
+  border-radius: 0;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.kpi-cell {
+  background: var(--white);
+  padding: 1.35rem 1.2rem 1.1rem;
+}
+.kpi-cell.dk { background: var(--dark-blue); }
+.kpi-cell.deep { background: var(--deep-blue); }
+ 
+.kpi-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dark-blue-grey);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+.kpi-cell.dk .kpi-label,
+.kpi-cell.deep .kpi-label { color: var(--light-blue-grey); }
+ 
+.kpi-val {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kpi-cell.dk .kpi-val { color: var(--pale-blue); }
+.kpi-cell.deep .kpi-val { color: var(--c-yellow); }
+ 
+.kpi-sub {
+  font-size: 0.68rem;
+  color: var(--dark-blue-grey);
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+.kpi-cell.dk .kpi-sub,
+.kpi-cell.deep .kpi-sub { color: var(--light-blue-grey); }
+ 
+.tag-up   { color: var(--c-teal);   font-weight: 600; }
+.tag-warn { color: var(--c-orange); font-weight: 600; }
+.tag-down { color: var(--c-red);    font-weight: 600; }
+ 
+/* ─── LAYOUT HELPERS ─── */
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+ 
+/* ─── CARD ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--light-blue-grey);
+  padding: 1.4rem 1.5rem;
+}
+.card-title {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dark-blue-grey);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--pale-blue-grey);
+}
+ 
+/* ─── CHART ─── */
+.chart-wrap { position: relative; width: 100%; }
+ 
+/* ─── SECTOR TABLE ─── */
+.sector-table { width: 100%; border-collapse: collapse; font-size: 0.79rem; }
+.sector-table th {
+  text-align: left;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dark-blue-grey);
+  font-weight: 600;
+  padding: 0 0 0.5rem;
+  border-bottom: 1.5px solid var(--dark-blue);
+}
+.sector-table th:last-child,
+.sector-table td:last-child { text-align: right; }
+.sector-table td {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--pale-blue-grey);
+  color: var(--deep-blue);
+  font-size: 0.77rem;
+}
+.sector-table tr:last-child td { border-bottom: none; }
+ 
+.pill {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.pill-up   { background: rgba(42,182,169,0.12); color: #1a8a84; }
+.pill-down { background: rgba(237,27,52,0.10);  color: #b01228; }
+.pill-flat { background: rgba(255,212,0,0.18);  color: #7a6200; }
+ 
+.bar-wrap { display: flex; align-items: center; gap: 8px; }
+.bar-bg { flex: 1; height: 4px; background: var(--pale-blue-grey); }
+.bar-fill { height: 100%; background: var(--medium-blue); }
+ 
+/* ─── INVEST GRID ─── */
+.invest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--light-blue-grey);
+  border: 1px solid var(--light-blue-grey);
+  margin-bottom: 1.25rem;
+}
+.invest-cell { background: var(--white); padding: 1.2rem 1.25rem; }
+.invest-cat {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.cat-semi   { color: var(--medium-blue); }
+.cat-health { color: var(--c-teal); }
+.cat-energy { color: var(--c-orange); }
+.cat-tech   { color: var(--dark-blue-grey); }
+ 
+.invest-co { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; color: var(--dark-blue); }
+.invest-detail { font-size: 0.72rem; color: var(--dark-blue-grey); line-height: 1.55; }
+.invest-amt {
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--medium-blue);
+  margin-top: 0.55rem;
+}
+ 
+/* ─── SILICON DESERT STRIP ─── */
+.silicon-strip {
+  background: var(--deep-blue);
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.sd-item {}
+.sd-num {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--c-yellow);
+  line-height: 1;
+}
+.sd-label {
+  font-size: 0.67rem;
+  color: var(--light-blue-grey);
+  margin-top: 0.3rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+ 
+/* ─── MAYOR SECTION ─── */
+.mayor-source {
+  background: var(--pale-blue-grey);
+  border-left: 4px solid var(--medium-blue);
+  padding: 0.8rem 1.2rem;
+  font-size: 0.72rem;
+  color: var(--dark-blue-grey);
+  margin-bottom: 1.25rem;
+  font-weight: 400;
+}
+.mayor-source strong { color: var(--dark-blue); font-weight: 700; }
+ 
+.mayor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--light-blue-grey);
+  border: 1px solid var(--light-blue-grey);
+  margin-bottom: 1.25rem;
+}
+.mayor-cell { background: var(--dark-blue); padding: 1.3rem 1.4rem; }
+.mayor-cell.light { background: var(--pale-blue-grey); }
+ 
+.mayor-cat {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--light-blue);
+  margin-bottom: 0.5rem;
+}
+.mayor-cell.light .mayor-cat { color: var(--medium-blue); }
+ 
+.mayor-cell h3 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--pale-blue);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+.mayor-cell.light h3 { color: var(--dark-blue); }
+ 
+.mayor-cell p {
+  font-size: 0.72rem;
+  color: var(--light-blue-grey);
+  line-height: 1.6;
+}
+.mayor-cell.light p { color: var(--deep-blue-grey); }
+ 
+.mayor-stat {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--c-yellow);
+  margin-top: 0.6rem;
+}
+.mayor-cell.light .mayor-stat { color: var(--medium-blue); }
+ 
+/* ─── OUTLOOK ─── */
+.outlook-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.outlook-card { padding: 1.4rem 1.5rem; }
+.outlook-card.tail {
+  background: var(--white);
+  border: 1px solid var(--light-blue-grey);
+  border-top: 4px solid var(--medium-blue);
+}
+.outlook-card.head {
+  background: var(--white);
+  border: 1px solid var(--light-blue-grey);
+  border-top: 4px solid var(--c-orange);
+}
+.outlook-h {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.outlook-card.tail .outlook-h { color: var(--medium-blue); }
+.outlook-card.head .outlook-h { color: var(--c-orange); }
+ 
+.outlook-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.outlook-list li {
+  font-size: 0.76rem;
+  color: var(--deep-blue);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.outlook-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--med-blue-grey);
+  font-weight: 600;
+}
+ 
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--deep-blue);
+  padding: 1.5rem 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left {
+  font-size: 0.67rem;
+  color: var(--light-blue-grey);
+  line-height: 1.8;
+}
+.footer-left strong { color: var(--white); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.footer-right {
+  font-size: 0.62rem;
+  color: var(--med-blue-grey);
+  text-align: right;
+  line-height: 1.8;
+}
+ 
+/* ─── DIVIDER ─── */
+.rule { height: 1px; background: var(--light-blue-grey); margin: 2rem 0; }
+ 
+@media print {
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover::after { display: none; }
+}
+</style>
+</head>
+<body>
+ 
+<!-- COLOR BAR -->
+<div class="color-bar">
+  <span></span><span></span><span></span><span></span>
+</div>
+ 
+<!-- COVER -->
+<div class="cover">
+  <div style="position:relative;z-index:1;">
+    <div class="cover-logo">
+      <div class="cover-logo-mark">C</div>
+      <div class="cover-logo-text">Colliers</div>
+    </div>
+    <p class="cover-eyebrow">Research &amp; Market Intelligence &nbsp;·&nbsp; Phoenix Industrial</p>
+    <h1>Metro Phoenix<br><strong>Economic Dashboard</strong></h1>
+    <p class="cover-sub">
+      Q2 2026 Update &nbsp;·&nbsp; April 30, 2026<br>
+      Sources: BLS · U.S. Census Bureau · GPEC · Eller College of Management · City of Phoenix
+    </p>
+  </div>
+  <div class="cover-badge" style="position:relative;z-index:1;">
+    <div class="big-num">#10</div>
+    <div class="big-label">Largest U.S. Metro<br>by Population</div>
+  </div>
+</div>
+ 
+<!-- COLOR BAR -->
+<div class="color-bar">
+  <span></span><span></span><span></span><span></span>
+</div>
+ 
+<div class="body-wrap">
+ 
+  <!-- ── SECTION 1: SNAPSHOT ── -->
+  <div class="section-gap" style="margin-top:1.5rem;">
+    <div class="section-header">
+      <span class="section-title">Economic Snapshot</span>
+      <span class="section-date">Most Recent Data Available — Q1/Q2 2026</span>
+    </div>
+ 
+    <div class="kpi-grid">
+      <div class="kpi-cell deep">
+        <div class="kpi-label">MSA GDP (2024 est.)</div>
+        <div class="kpi-val">$570B+</div>
+        <div class="kpi-sub">14th largest U.S. metro GDP · 42% growth 2019–2023</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">Total Nonfarm Employment (Feb 2026)</div>
+        <div class="kpi-val">2.49M</div>
+        <div class="kpi-sub"><span class="tag-up">▲ +0.2% YoY</span> · 2,485.7K · BLS preliminary</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">Unemployment Rate (Feb 2026, NSA)</div>
+        <div class="kpi-val">4.2%</div>
+        <div class="kpi-sub">Preliminary · Up from 3.5% in Dec 2025 · U.S. = 4.4%</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">CPI Inflation (Feb 2026, YoY)</div>
+        <div class="kpi-val">1.7%</div>
+        <div class="kpi-sub"><span class="tag-up">Below U.S. avg (2.7%)</span> · 18+ consecutive months</div>
+      </div>
+    </div>
+ 
+    <div class="kpi-grid">
+      <div class="kpi-cell">
+        <div class="kpi-label">Metro Population (2025 est.)</div>
+        <div class="kpi-val">5.23M</div>
+        <div class="kpi-sub"><span class="tag-up">▲ +59,065 residents 2024–25</span> · #4 numeric gain nationally</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">Population Growth Rate (2024–25)</div>
+        <div class="kpi-val">1.14%</div>
+        <div class="kpi-sub">2× the national rate (0.52%) · Only Dallas &amp; Houston faster</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">Median Household Income (2024)</div>
+        <div class="kpi-val">$90,133</div>
+        <div class="kpi-sub"><span class="tag-up">▲ +2.2% YoY</span> (from $88,218 in 2023) · Phoenix-Mesa-Chandler MSA · ACS 1-Year</div>
+      </div>
+      <div class="kpi-cell dk">
+        <div class="kpi-label">Per Capita GDP Growth Rank (2022–24)</div>
+        <div class="kpi-val">Top 4</div>
+        <div class="kpi-sub">Alongside Seattle, San Jose &amp; San Francisco · Mayor Gallego, Apr 2026</div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── SECTION 2: EMPLOYMENT ── -->
+  <div class="section-gap">
+    <div class="section-header">
+      <span class="section-title">Employment by Sector</span>
+      <span class="section-date">BLS — February 2026 (Preliminary)</span>
+    </div>
+ 
+    <div class="two-col">
+    <div class="card">
+        <div class="card-title">Nonfarm Payrolls — Industry Breakdown (000s) &amp; YoY Change</div>
+        <table class="sector-table">
+          <thead>
+            <tr>
+              <th>Sector</th>
+              <th style="width:130px;">Jobs (000s)</th>
+              <th>YoY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trade, Transport &amp; Utilities</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>475.7</div></td>
+              <td><span class="pill pill-down">−0.5%</span></td>
+            </tr>
+            <tr>
+              <td>Education &amp; Health Services</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:90%"></div></div>428.0</div></td>
+              <td><span class="pill pill-up">+2.7%</span></td>
+            </tr>
+            <tr>
+              <td>Professional &amp; Business Services</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:82%"></div></div>388.1</div></td>
+              <td><span class="pill pill-up">+0.7%</span></td>
+            </tr>
+            <tr>
+              <td>Leisure &amp; Hospitality</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:57%"></div></div>270.5</div></td>
+              <td><span class="pill pill-down">−0.7%</span></td>
+            </tr>
+            <tr>
+              <td>Government</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:55%"></div></div>261.8</div></td>
+              <td><span class="pill pill-down">−0.7%</span></td>
+            </tr>
+            <tr>
+              <td>Financial Activities</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:44%"></div></div>209.6</div></td>
+              <td><span class="pill pill-down">−1.5%</span></td>
+            </tr>
+            <tr>
+              <td>Construction</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:38%"></div></div>179.2</div></td>
+              <td><span class="pill pill-down">−1.0%</span></td>
+            </tr>
+            <tr>
+              <td>Manufacturing</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:31%"></div></div>148.0</div></td>
+              <td><span class="pill pill-flat">+0.1%</span></td>
+            </tr>
+            <tr>
+              <td>Other Services</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:17%"></div></div>79.4</div></td>
+              <td><span class="pill pill-up">+2.5%</span></td>
+            </tr>
+            <tr>
+              <td>Information</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:9%"></div></div>41.0</div></td>
+              <td><span class="pill pill-flat">+0.2%</span></td>
+            </tr>
+            <tr>
+              <td>Mining &amp; Logging</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:1%"></div></div>4.4</div></td>
+              <td><span class="pill pill-up">+12.8%</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.75rem;">Source: U.S. Bureau of Labor Statistics, Economy at a Glance — Phoenix-Mesa-Chandler, AZ. bls.gov/eag/eag.az_phoenix_msa.htm · February 2026 (preliminary). YoY = Feb 2025 to Feb 2026. Not seasonally adjusted.</p>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">Unemployment Rate — Phoenix MSA vs. U.S. (%)</div>
+        <div class="chart-wrap" style="height:280px;">
+          <canvas id="urChart" role="img" aria-label="Line chart comparing Phoenix MSA and U.S. unemployment rates monthly Jan 2022 through Dec 2025.">Phoenix (PHOE004UR, smoothed SA): trended from ~3.5% in Jan 2022 down to 2.9% mid-2022, rising to 3.9% by Dec 2025. U.S. (UNRATE, SA): from 4.0% Jan 2022, fell to 3.4% early 2023, rose to 4.5% Nov 2025.</canvas>
+        </div>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.5rem;">Source: U.S. Bureau of Labor Statistics, Local Area Unemployment Statistics (LAUS). Data: January 2020 – February 2026. Phoenix MSA &amp; U.S. Not Seasonally Adjusted. Oct 2025 unavailable (federal appropriations lapse). Retrieved via FRED: fred.stlouisfed.org/series/PHOE004UR &amp; /UNRATE.</p>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── SECTION 3: POPULATION & INFLATION ── -->
+  <div class="section-gap">
+    <div class="section-header">
+      <span class="section-title">Population &amp; Inflation</span>
+      <span class="section-date">U.S. Census Bureau / BLS 2025–2026</span>
+    </div>
+ 
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Metro Population Annual Growth Rate — Phoenix vs. U.S. (%)</div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="popChart" role="img" aria-label="Grouped bar chart comparing Phoenix metro and U.S. annual population growth rates 2021 through 2025.">Phoenix: 2021 1.52%, 2022 1.53%, 2023 1.24%, 2024 1.62%, 2025 1.14%. U.S.: 2021 0.16%, 2022 0.57%, 2023 0.83%, 2024 0.96%, 2025 0.52%.</canvas>
+        </div>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.5rem;">Source: U.S. Census Bureau, Population Estimates Program, Vintage 2025. Annual growth = % change July 1 to July 1 of each year. Phoenix #4 nationally for numeric growth in 2025.</p>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">CPI Inflation — Phoenix MSA vs. U.S. (12-Month %)</div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="cpiChart" role="img" aria-label="Line chart showing Phoenix MSA CPI inflation vs U.S. from 2022 through February 2026.">Phoenix peaked ~12% mid-2022, now 1.7% Feb 2026. U.S. peaked ~9.1%, now ~2.7%.</canvas>
+        </div>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.5rem;">Source: BLS CPI-U, Phoenix-Mesa-Scottsdale. Most recent: Feb 2026 (1.7% YoY). Oct 2025 unavailable — federal funding lapse.</p>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── SECTION 4: MAJOR INVESTMENT ── -->
+  <div class="section-gap">
+    <div class="section-header">
+      <span class="section-title">Major Capital Investment</span>
+      <span class="section-date">Active &amp; Announced — Silicon Desert</span>
+    </div>
+ 
+    <div class="invest-grid">
+      <div class="invest-cell">
+        <div class="invest-cat cat-semi">Semiconductor</div>
+        <div class="invest-co">TSMC Arizona</div>
+        <div class="invest-detail">900-acre land acquisition in early 2026 (~$197M) brings total campus to 2,000+ acres in N. Phoenix. Multi-fab campus representing $165B in total investment — the largest FDI in U.S. history. Campus scope reportedly expanding beyond initial announcement with more fabs and advanced packaging facilities.</div>
+        <div class="invest-amt">$165B total investment</div>
+      </div>
+      <div class="invest-cell">
+        <div class="invest-cat cat-semi">Semiconductor Supplier</div>
+        <div class="invest-co">Lam Research</div>
+        <div class="invest-detail">Purchased 147,638 sq ft Class A office building at 25700 N. Norterra Pkwy, Deer Valley for $45.77M (Dec 2025), adjacent to TSMC campus. Also tenant at neighboring Terrawest building (~152,000 sq ft) where multiple TSMC suppliers have established a presence.</div>
+        <div class="invest-amt">$45.77M office acquisition</div>
+        <div style="font-size:0.6rem; color:var(--med-blue-grey); margin-top:0.5rem;">Source: <a href="https://realestatedaily-news.com/newmark-represents-lam-research-in-45-77-million-north-phoenix-office-acquisition-near-tsmc-campus/" target="_blank" style="color:var(--medium-blue);">Real Estate Daily News (Jan 2026)</a></div>
+      </div>
+      <div class="invest-cell">
+        <div class="invest-cat cat-semi">Semiconductor Packaging</div>
+        <div class="invest-co">Amkor Technology</div>
+        <div class="invest-detail">Broke ground Oct 2025 on 104-acre campus in Peoria Innovation Core. Two-phase project: 750,000+ sq ft cleanroom; first facility complete mid-2027, production early 2028. Customers: Apple and NVIDIA. Supported by CHIPS Act ($900M federal) and state/local incentives. 3,000 jobs at full build-out.</div>
+        <div class="invest-amt">$7B · 3,000 jobs</div>
+        <div style="font-size:0.6rem; color:var(--med-blue-grey); margin-top:0.5rem;">Sources: <a href="https://ir.amkor.com/news-releases/news-release-details/amkor-technology-breaks-ground-new-semiconductor-advanced" target="_blank" style="color:var(--medium-blue);">Amkor IR (Oct 2025)</a> · <a href="https://www.nist.gov/chips/amkor-technology-inc-arizona-peoria" target="_blank" style="color:var(--medium-blue);">NIST CHIPS Award</a></div>
+      </div>
+      <div class="invest-cell">
+        <div class="invest-cat cat-health">Healthcare / Biomedical</div>
+        <div class="invest-co">Mayo Clinic Arizona</div>
+        <div class="invest-detail">Nearly $1.9B expansion of Phoenix campus (56th St &amp; Mayo Blvd). Adds 1.2M sq ft: new procedural building, 11 operating rooms, 48 beds, two-story promenade. Design began 2025; completion targeted 2031. Largest-ever Mayo investment in Arizona. 3,500 additional jobs.</div>
+        <div class="invest-amt">$1.9B · 3,500 jobs</div>
+        <div style="font-size:0.6rem; color:var(--med-blue-grey); margin-top:0.5rem;">Sources: <a href="https://www.phoenix.gov/newsroom/ced-news/3373.html" target="_blank" style="color:var(--medium-blue);">City of Phoenix (Mar 2025)</a> · <a href="https://www.azfamily.com/2025/03/03/mayo-clinic-announces-19-billion-expansion-phoenix-campus/" target="_blank" style="color:var(--medium-blue);">AZFamily (Mar 2025)</a></div>
+      </div>
+      <div class="invest-cell">
+        <div class="invest-cat cat-energy">Clean Energy / Battery</div>
+        <div class="invest-co">LG Energy Solution</div>
+        <div class="invest-detail">$5.5B battery complex in Queen Creek (East Valley). Cylindrical EV battery plant (46-Series) construction complete late 2025, production expected 2026. ESS LFP plant paused pending market conditions. ~2,800 jobs Phase 1. First-ever U.S. stand-alone cylindrical battery plant.</div>
+        <div class="invest-amt">$5.5B · Queen Creek</div>
+        <div style="font-size:0.6rem; color:var(--med-blue-grey); margin-top:0.5rem;">Sources: <a href="https://news.lgensol.com/company-news/press-releases/1613/" target="_blank" style="color:var(--medium-blue);">LGES press release (Mar 2023)</a> · <a href="https://www.utilitydive.com/news/lg-pauses-arizona-battery-plant-energy-storage/720416/" target="_blank" style="color:var(--medium-blue);">Utility Dive (Jul 2024)</a></div>
+      </div>
+      <div class="invest-cell">
+        <div class="invest-cat cat-tech">Advanced Mfg / AI</div>
+        <div class="invest-co">Hadrian (Mesa)</div>
+        <div class="invest-detail">Opened Factory 3 (F3) on Jan 29, 2026 — 290,000 sq ft AI-powered manufacturing and software hub at The Cubes Mesa Gateway. Already in production: precision components and mission-critical systems for aerospace and defense. 350+ high-wage jobs.</div>
+        <div class="invest-amt">$200M · Opened Jan 2026</div>
+        <div style="font-size:0.6rem; color:var(--med-blue-grey); margin-top:0.5rem;">Sources: <a href="https://www.prnewswire.com/news-releases/hadrian-celebrates-ribbon-cutting-of-factory-3-f3-in-mesa-arizona-302674488.html" target="_blank" style="color:var(--medium-blue);">PR Newswire (Jan 2026)</a> · <a href="https://www.azcommerce.com/news-events/news/2026/1/hadrian-ribbon-cutting/" target="_blank" style="color:var(--medium-blue);">AZ Commerce Authority</a></div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <!-- ── SECTION 5: BUSINESS FORMATION ── -->
+  <div class="section-gap">
+    <div class="section-header">
+      <span class="section-title">Business Formation &amp; Entrepreneurship</span>
+      <span class="section-date">GPEC · PitchBook · Inc. Magazine · 2025</span>
+    </div>
+ 
+    <div class="kpi-grid" style="margin-bottom:1.25rem;">
+      <div class="kpi-cell dk">
+        <div class="kpi-label">VC Funding (2024)</div>
+        <div class="kpi-val">$1.2B</div>
+        <div class="kpi-sub"><span class="tag-up">7 consecutive years above $1B threshold</span> · +146% growth vs. 2014 · Source: PitchBook via GPEC</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">Total VC Invested (2020–2024)</div>
+        <div class="kpi-val">$7.6B</div>
+        <div class="kpi-sub">Greater Phoenix's 5-year venture capital base · Source: PitchBook via GPEC Startups Report 2025</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">National Startup Ranking</div>
+        <div class="kpi-val">#7</div>
+        <div class="kpi-sub">Greater Phoenix among top U.S. cities for number of startups · Source: U.S. Census Bureau via GPEC 2025</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-label">GPEC Business Attraction FY25</div>
+        <div class="kpi-val">54 cos.</div>
+        <div class="kpi-sub">2nd-most in GPEC history · 7,206 new jobs · $572M payroll · Source: GPEC FY25 Annual Report</div>
+      </div>
+    </div>
+ 
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Venture Capital — Key Metrics</div>
+        <table class="sector-table">
+          <thead>
+            <tr><th>Indicator</th><th style="text-align:right;">Figure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>VC funding, 2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$1.2B · 140+ deals</td></tr>
+            <tr><td>VC investment growth, 2014–2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">+146%</td></tr>
+            <tr><td>Total VC invested, 2020–2024</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$7.6B</td></tr>
+            <tr><td>Q1 2025 VC activity</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$214M · 34 deals</td></tr>
+            <tr><td>Consecutive years above $1B VC threshold</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">7 years</td></tr>
+            <tr><td>National startup ranking (U.S. Census Bureau)</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">#7 among U.S. cities</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.8rem;">Source: PitchBook data via <a href="https://www.gpec.org/services/research-reports/the-future-of-startups-and-entrepreneurship/" target="_blank" style="color:var(--medium-blue);">GPEC Future of Startups &amp; Entrepreneurship Report, 2025</a></p>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">Business Attraction &amp; Growth</div>
+        <table class="sector-table">
+          <thead>
+            <tr><th>Indicator</th><th style="text-align:right;">Figure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Companies attracted by GPEC, FY25</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">54 companies</td></tr>
+            <tr><td>Total jobs created, FY25</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">7,206 jobs</td></tr>
+            <tr><td>High-wage jobs (avg. salary $91,206)</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">4,983 jobs</td></tr>
+            <tr><td>Total payroll generated, FY25</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">$572M</td></tr>
+            <tr><td>Inc. 5000 Arizona companies (2025)</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">137 companies</td></tr>
+            <tr><td>Phoenix-area Inc. 5000 median revenue growth</td><td style="text-align:right; font-weight:600; color:var(--medium-blue);">183%</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.62rem; color:var(--dark-blue-grey); margin-top:0.8rem;">Sources: <a href="https://annualreport.gpec.org/" target="_blank" style="color:var(--medium-blue);">GPEC FY25 Annual Report</a> · <a href="https://www.inc.com/benjamin-butler/these-are-the-25-fastest-growing-companies-in-phoenix/91235671" target="_blank" style="color:var(--medium-blue);">Inc. Magazine, 2025 Inc. 5000</a></p>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── SECTION 6: MAYOR'S ADDRESS ── -->
+  <div class="section-gap">
+    <div class="section-header">
+      <span class="section-title">City Leadership Priorities</span>
+      <span class="section-date">Mayor Gallego — State of the City Address · April 23, 2026</span>
+    </div>
+ 
+    <div class="mayor-source">
+      <strong>Source:</strong> Mayor Kate Gallego, Annual State of the City Address, Greater Phoenix Chamber of Commerce, April 23, 2026.
+    </div>
+ 
+    <div class="mayor-grid">
+      <div class="mayor-cell">
+        <div class="mayor-cat">Economic Competitiveness</div>
+        <h3>Top 4 U.S. City for Per Capita GDP Growth</h3>
+        <p>Phoenix ranked alongside Seattle, San Jose, and San Francisco for per capita GDP growth from 2022 to 2024, and ranked 4th nationally for attracting new corporate headquarters in 2025.</p>
+        <div class="mayor-stat">#4 Corp. HQ</div>
+      </div>
+      <div class="mayor-cell">
+        <div class="mayor-cat">Semiconductor Ecosystem</div>
+        <h3>TSMC Supplier Wave in Deer Valley</h3>
+        <p>TSMC's $165 billion campus — now spanning 2,000+ acres in N. Phoenix — continues to attract suppliers. Lam Research located its national training center nearby, adding 440 high-quality jobs. Suppliers have secured 80+ acres in Deer Valley.</p>
+        <div class="mayor-stat">80+ acres secured</div>
+      </div>
+      <div class="mayor-cell light">
+        <div class="mayor-cat">Emerging Technology</div>
+        <h3>Phoenix Quantum Strategy Announced</h3>
+        <p>A new city-led initiative to position Phoenix as a national hub for quantum computing, communications, and sensing. Led by former NSF Director Dr. Sethuraman Panchanathan.</p>
+        <div class="mayor-stat">Next frontier</div>
+      </div>
+      <div class="mayor-cell light">
+        <div class="mayor-cat">Innovation &amp; Education</div>
+        <h3>$50M City Investment in ASU Health</h3>
+        <p>The city is investing $50M in the new ASU Health building on downtown's Phoenix Biomedical Core — merging medical and engineering education to transform health outcomes in the region.</p>
+        <div class="mayor-stat">$50M committed</div>
+      </div>
+      <div class="mayor-cell">
+        <div class="mayor-cat">Housing &amp; Affordability</div>
+        <h3>Phoenix Housing Trust Fund: $15M</h3>
+        <p>The Housing Trust Fund reaches $15M in 2026. Starting this year, funds will cover permit fees for affordable housing projects — removing a critical barrier to project viability.</p>
+        <div class="mayor-stat">$15M in 2026</div>
+      </div>
+      <div class="mayor-cell">
+        <div class="mayor-cat">Business Climate</div>
+        <h3>Continued Corporate Headquarters Attraction</h3>
+        <p>Phoenix ranked 4th for new corporate HQ attraction in 2025. Combined with the Quantum Strategy and biomedical campus expansion, the city is diversifying its growth well beyond manufacturing.</p>
+        <div class="mayor-stat">Year 8: Mayor Gallego</div>
+      </div>
+    </div>
+  </div>
+ 
+ 
+</div><!-- /body-wrap -->
+ 
+<!-- COLOR BAR -->
+<div class="color-bar">
+  <span></span><span></span><span></span><span></span>
+</div>
+ 
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">
+    <strong>Colliers International</strong><br>
+    Research &amp; Market Intelligence · Phoenix, Arizona<br>
+    Prepared April 30, 2026 · Data as of most recent available release per source
+  </div>
+  <div class="footer-right">
+    U.S. Bureau of Labor Statistics · U.S. Census Bureau · GPEC<br>
+    Eller College of Management (U of A)<br>
+    City of Phoenix Mayor's Office · FRED / St. Louis Fed
+  </div>
+</div>
+ 
+<script>
+const dkBlue = '#25408F';
+const mdBlue = '#1C54F4';
+const ltBlue = '#4D93FF';
+const blueGrey = '#7B8BBD';
+const teal = '#2AB6A9';
+const orange = '#FA6609';
+const gridC = 'rgba(172,187,232,0.4)';
+const textC = '#56648F';
+ 
+// Unemployment rate line chart
+// Data sourced directly from user-uploaded Excel file (US_and_Phoenix_unemployment_rate.xlsx)
+// Phoenix: BLS Local Area Unemployment Statistics (LAUS), Not Seasonally Adjusted
+// U.S.: BLS UNRATE, Not Seasonally Adjusted
+// Jan 2020 – Feb 2026 · Oct 2025 unavailable (federal appropriations lapse)
+new Chart(document.getElementById('urChart'), {
+  type: 'line',
+  data: {
+    labels: [
+      'Jan\n2020','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2021','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2022','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2023','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2024','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2025','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan\n2026','Feb'
+    ],
+    datasets: [
+      {
+        label: 'Phoenix MSA',
+        data: [
+          4.1,3.9,4.7,12.5,10.6,9.6,9.3,7.5,7.0,6.2,6.0,6.0,  // 2020
+          6.1,5.8,5.4,5.2,5.0,5.5,4.9,4.3,3.9,3.4,3.0,2.8,      // 2021
+          3.4,3.2,2.9,3.1,3.2,3.7,3.7,3.7,3.5,3.4,3.1,2.9,      // 2022
+          3.1,3.1,3.0,2.9,3.2,3.6,3.6,3.6,3.4,3.4,3.0,2.9,      // 2023
+          3.0,3.0,2.7,2.6,2.9,3.5,3.8,3.6,3.4,3.4,3.3,3.1,      // 2024
+          3.5,3.6,3.6,3.1,3.7,4.0,4.1,4.2,4.1,null,3.8,3.5,      // 2025
+          4.4,4.2                                                   // 2026
+        ],
+        borderColor: mdBlue,
+        backgroundColor: 'rgba(28,84,244,0.06)',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        borderWidth: 2,
+        spanGaps: false
+      },
+      {
+        label: 'United States',
+        data: [
+          4.0,3.8,4.5,14.4,13.0,11.2,10.5,8.5,7.7,6.6,6.4,6.5,  // 2020
+          6.8,6.6,6.2,5.7,5.5,6.1,5.7,5.3,4.6,4.3,3.9,3.7,       // 2021
+          4.4,4.1,3.8,3.3,3.4,3.8,3.8,3.8,3.3,3.4,3.4,3.3,       // 2022
+          3.9,3.9,3.6,3.1,3.4,3.8,3.8,3.9,3.6,3.6,3.5,3.5,       // 2023
+          4.1,4.2,3.9,3.5,3.7,4.3,4.5,4.4,3.9,3.9,4.0,3.8,       // 2024
+          4.4,4.5,4.2,3.9,4.0,4.4,4.6,4.5,4.3,null,4.3,4.1,       // 2025
+          4.7,4.7                                                    // 2026
+        ],
+        borderColor: blueGrey,
+        borderDash: [5, 4],
+        backgroundColor: 'transparent',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        borderWidth: 1.5,
+        spanGaps: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, boxWidth: 10, padding: 14 }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.parsed.y !== null ? ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' : ' Data unavailable'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: textC,
+          font: { size: 8, family: "'Open Sans', Verdana, sans-serif" },
+          maxRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: 12
+        },
+        grid: { color: gridC }
+      },
+      y: {
+        ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, callback: v => v.toFixed(1) + '%' },
+        grid: { color: gridC },
+        min: 0,
+        max: 16
+      }
+    }
+  }
+});
+ 
+// Population chart — grouped bar
+// Phoenix: Census Vintage 2025 CBSA-MET-EST2025-CHG (provided by user)
+// U.S.: Census Vintage 2025 national estimates (provided by user)
+new Chart(document.getElementById('popChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2021','2022','2023','2024','2025'],
+    datasets: [
+      {
+        label: 'Phoenix MSA',
+        data: [1.52, 1.53, 1.24, 1.62, 1.14],
+        backgroundColor: mdBlue,
+        borderRadius: 2,
+        borderSkipped: false
+      },
+      {
+        label: 'United States',
+        data: [0.16, 0.57, 0.83, 0.96, 0.52],
+        backgroundColor: '#ACBBE8',
+        borderRadius: 2,
+        borderSkipped: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true, position: 'bottom',
+        labels: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, boxWidth: 10, padding: 14 }
+      },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(2) + '%' } }
+    },
+    scales: {
+      x: { ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" } }, grid: { color: gridC } },
+      y: { ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, callback: v => v.toFixed(1) + '%' }, grid: { color: gridC }, beginAtZero: true }
+    }
+  }
+});
+ 
+// CPI chart
+new Chart(document.getElementById('cpiChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mar 22','Jun 22','Sep 22','Dec 22','Mar 23','Jun 23','Sep 23','Dec 23','Mar 24','Jun 24','Sep 24','Dec 24','Feb 26'],
+    datasets: [
+      {
+        label: 'Phoenix MSA',
+        data: [9.0, 12.3, 11.8, 8.1, 5.2, 3.6, 2.6, 2.5, 2.6, 2.1, 1.5, 2.2, 1.7],
+        borderColor: mdBlue,
+        backgroundColor: 'rgba(28,84,244,0.06)',
+        tension: 0.35,
+        fill: true,
+        pointRadius: 3,
+        pointBackgroundColor: mdBlue,
+        borderWidth: 2
+      },
+      {
+        label: 'United States',
+        data: [8.5, 9.1, 8.2, 6.5, 5.0, 3.0, 3.7, 3.4, 3.5, 3.0, 2.4, 2.9, 2.7],
+        borderColor: blueGrey,
+        borderDash: [5, 4],
+        backgroundColor: 'transparent',
+        tension: 0.35,
+        pointRadius: 3,
+        pointBackgroundColor: blueGrey,
+        borderWidth: 1.5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true, position: 'bottom',
+        labels: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, boxWidth: 10, padding: 14 }
+      },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } }
+    },
+    scales: {
+      x: { ticks: { color: textC, font: { size: 9, family: "'Open Sans', Verdana, sans-serif" }, maxRotation: 45, autoSkip: false }, grid: { color: gridC } },
+      y: { ticks: { color: textC, font: { size: 10, family: "'Open Sans', Verdana, sans-serif" }, callback: v => v + '%' }, grid: { color: gridC }, beginAtZero: true }
+    }
+  }
+});
+ 
+</script>
+</body>
+</html>
