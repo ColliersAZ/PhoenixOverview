@@ -502,6 +502,39 @@ body {
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .cover::after { display: none; }
 }
+
+/* ─── MOBILE RESPONSIVE — added for mobile compatibility, no other changes ─── */
+@media (max-width: 700px) {
+  html { font-size: 12px; }
+  .cover { grid-template-columns: 1fr; padding: 2rem 1.25rem 1.75rem; gap: 1rem; }
+  .cover::after { display: none; }
+  .cover h1 { font-size: 2rem; }
+  .cover-badge { text-align: left; }
+  .cover-badge .big-num { font-size: 3rem; }
+  .body-wrap { padding: 1.25rem 1rem 3rem; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-val { font-size: 1.5rem; }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .invest-grid { grid-template-columns: 1fr; }
+  .mayor-grid { grid-template-columns: 1fr; }
+  .priority-strip { grid-template-columns: 1fr; }
+  .silicon-strip { grid-template-columns: repeat(2, 1fr); }
+  .outlook-grid { grid-template-columns: 1fr; }
+  .card { padding: 1rem; overflow-x: auto; }
+  .sector-table { min-width: 340px; font-size: 0.72rem; }
+  .section-header { flex-direction: column; gap: 0.2rem; }
+  .footer { padding: 1.25rem 1rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  .footer-right { text-align: center; }
+}
+
+@media (max-width: 420px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .kpi-val { font-size: 1.35rem; }
+  .cover h1 { font-size: 1.6rem; }
+  .silicon-strip { grid-template-columns: 1fr; }
+}
+
+ 
 </style>
 </head>
 <body>
