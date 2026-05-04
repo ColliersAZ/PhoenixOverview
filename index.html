@@ -525,6 +525,8 @@ body {
   .section-header { flex-direction: column; gap: 0.2rem; }
   .footer { padding: 1.25rem 1rem; flex-direction: column; gap: 0.5rem; text-align: center; }
   .footer-right { text-align: center; }
+ .chart-wrap { overflow: hidden; width: 100%; max-width: 100%; }
+.chart-wrap canvas { max-width: 100% !important; }
 }
 
 @media (max-width: 420px) {
@@ -532,6 +534,7 @@ body {
   .kpi-val { font-size: 1.35rem; }
   .cover h1 { font-size: 1.6rem; }
   .silicon-strip { grid-template-columns: 1fr; }
+ .chart-wrap { height: 200px !important; }
 }
 
  
